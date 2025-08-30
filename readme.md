@@ -129,7 +129,7 @@ REACT_APP_API_BASE_URL=http://localhost:5000/api
 3. Start dev server
 
 ```bash
-npm start
+npm run dev
 ```
 
 ### Frontend behavior
