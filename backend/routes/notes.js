@@ -33,18 +33,27 @@ router.get("/", async (req, res) => {
 router.post("/", upload.single("audio"), async (req, res) => {
   try {
     const { title } = req.body;
-    const audioUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    // const audioUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
     let transcript = "";
     if (req.file) {
       transcript = await generateTranscript(req.file.path);
+
+      //  If transcript generated successfully, delete audio file
+      if (transcript && transcript.trim() !== "") {
+        fs.unlink(req.file.path, (err) => {
+          if (err) console.error("Error deleting audio file:", err);
+          else console.log("Audio file deleted successfully.");
+        });
+       
+      }
     } else if (req.body.transcript) {
       transcript = req.body.transcript;
     }
 
     const voiceNote = new VoiceNote({
       title: title || "Untitled Note",
-      audioUrl,
+      // audioUrl,
       transcript,
     });
 
@@ -115,10 +124,10 @@ router.delete("/:id", async (req, res) => {
     const note = await VoiceNote.findById(req.params.id);
     if (!note) return res.status(404).json({ error: "Note not found" });
 
-    if (note.audioUrl) {
-      const filePath = path.join(__dirname, "..", note.audioUrl);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    }
+    // if (note.audioUrl) {
+    //   const filePath = path.join(__dirname, "..", note.audioUrl);
+    //   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    // }
 
     await VoiceNote.findByIdAndDelete(req.params.id);
     res.json({ message: "Note deleted successfully" });

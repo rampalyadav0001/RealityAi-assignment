@@ -91,14 +91,7 @@ const NoteItem = ({ note, onNoteUpdated, onNoteDeleted, apiBaseUrl }) => {
         ) : (
           <p className="note-transcript">{note.transcript}</p>
         )}
-
-        {note.audioUrl && (
-          <div className="audio-player">
-            <audio controls src={`http://localhost:5000${note.audioUrl}`}>
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        )}
+    
 
         {note.summary && (
           <div className="note-summary">

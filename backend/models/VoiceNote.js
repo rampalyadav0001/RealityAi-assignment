@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const voiceNoteSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  audioUrl: { type: String },
+  // audioUrl: { type: String },
   transcript: { type: String, required: true },
   summary: { type: String, default: "" },
   hasSummary: { type: Boolean, default: false },
